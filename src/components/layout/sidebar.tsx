@@ -21,8 +21,8 @@ const navigation = [
   { name: "Movimientos", href: "/transactions", icon: ArrowLeftRight },
   { name: "Cuentas", href: "/accounts", icon: Wallet },
   { name: "Categorías", href: "/categories", icon: Tags },
-  { name: "Presupuestos", href: "/budgets", icon: PieChart, badge: "Sprint 2" },
-  { name: "Metas de Ahorro", href: "/savings", icon: Target, badge: "Sprint 2" },
+  { name: "Presupuestos", href: "/budgets", icon: PieChart },
+  { name: "Metas de Ahorro", href: "/savings", icon: Target },
   { name: "Bola de Nieve", href: "/debts", icon: Snowflake, badge: "Sprint 3" },
   { name: "Resumen Anual", href: "/reports", icon: BarChart3, badge: "Sprint 4" },
 ];
