@@ -1,13 +1,14 @@
 import { getFinancialSummary, getTransactions } from "@/features/transactions/actions";
 import { getAccounts } from "@/features/accounts/actions";
 import { getCategories } from "@/features/categories/actions";
+import { getDebtsOverview } from "@/features/debts/actions";
 import { Header } from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { QuickTransactionDialog } from "@/features/transactions/components/quick-transaction-dialog";
 import { CreateAccountDialog } from "@/features/accounts/components/create-account-dialog";
 import { TransactionsTable } from "@/features/transactions/components/transactions-table";
 import { formatCurrency } from "@/lib/utils";
-import { Wallet, TrendingUp, TrendingDown, Scale, PieChart } from "lucide-react";
+import { Wallet, TrendingUp, TrendingDown, Scale, PieChart, Snowflake, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default async function DashboardPage() {
@@ -15,6 +16,7 @@ export default async function DashboardPage() {
   const accounts = await getAccounts();
   const categories = await getCategories();
   const recentTransactions = await getTransactions({ limit: 8 });
+  const debtsData = await getDebtsOverview();
 
   const totalExpense = summary.totalExpenses || 1;
   const needsPct = Math.round((summary.breakdown503020.needs / totalExpense) * 100) || 0;
@@ -237,6 +239,39 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Resumen Bola de Nieve */}
+        {debtsData.activeDebts.length > 0 && (
+          <div className="rounded-2xl border border-indigo-200/80 dark:border-indigo-900/60 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-white dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-zinc-900 p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="h-11 w-11 rounded-xl bg-indigo-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-indigo-600/20">
+                <Snowflake className="h-6 w-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
+                    Método Bola de Nieve Activo
+                  </span>
+                  {debtsData.focusDebt && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                      <Sparkles className="h-3 w-3" />
+                      Foco: {debtsData.focusDebt.name}
+                    </span>
+                  )}
+                </div>
+                <div className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mt-0.5">
+                  Deuda total pendiente: {formatCurrency(debtsData.totalCurrent)} • {debtsData.generalProgress}% saldado
+                </div>
+              </div>
+            </div>
+            <Link
+              href="/debts"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition-colors shrink-0 shadow-xs"
+            >
+              Ver Plan de Deudas &rarr;
+            </Link>
+          </div>
+        )}
 
         {/* Últimos Movimientos */}
         <div className="space-y-3">

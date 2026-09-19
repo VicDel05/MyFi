@@ -23,7 +23,7 @@ const navigation = [
   { name: "Categorías", href: "/categories", icon: Tags },
   { name: "Presupuestos", href: "/budgets", icon: PieChart },
   { name: "Metas de Ahorro", href: "/savings", icon: Target },
-  { name: "Bola de Nieve", href: "/debts", icon: Snowflake, badge: "Sprint 3" },
+  { name: "Bola de Nieve", href: "/debts", icon: Snowflake },
   { name: "Resumen Anual", href: "/reports", icon: BarChart3, badge: "Sprint 4" },
 ];
 
